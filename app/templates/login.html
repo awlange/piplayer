@@ -11,9 +11,12 @@
     </head>
     <body>
         <h1>PiPlayer</h1>
-        <form action="" method="post">
-            <p><input type=text name=username>
-            <p><input type=submit value=Login>
+        <form action="/login" method="post">
+            <p>username: <input type=text name=username></p>
+            <p><input type=submit value=Login></p>
         </form>
+        {% if invalid_username is defined %}
+        <p>Invalid user name.</p>
+        {% endif %}
     </body>
 </html>
