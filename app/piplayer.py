@@ -37,8 +37,16 @@ def index():
     """
     if 'username' not in session:
         return redirect(url_for('login'))
+    return render_template('index.html',
+                           username=session['username'],
+                           music=getMusic(),
+                           currently_playing='nothing')
 
-    # Gather music information from disk
+
+def getMusic():
+    """
+    Gather music information from disk
+    """
     music = Music(u'./static/music/')
     music.artists = [Artist(name) for name in os.listdir(music.directory)]
     for artist in music.artists:
@@ -46,15 +54,12 @@ def index():
         if os.path.isdir(directory_artist):
             print os.listdir(directory_artist)
             albums = [Album(title) for title in os.listdir(directory_artist)]
-            print artist, albums[0]
+            #print artist, albums[0]
             # music.artists[music.artists.index(artist)] = albums
         else:
             music.artists.remove(artist)
 
-    return render_template('index.html',
-                           username=session['username'],
-                           music=music,
-                           currently_playing='nothing')
+    return music
 
 
 def setup():

@@ -10,16 +10,14 @@
         <link rel="stylesheet" href="/static/css/main.css">
     </head>
     <body>
-        <div class="center">
-            <h1>PiPlayer</h1>
-            <form action="/login" method="post">
-                <p>username: <input type=text name=username></p>
-                <p>password: <input type=text name=password></p>
-                <p><input type=submit value=login></p>
-            </form>
-            {% if invalid_username is defined %}
-            <p>Invalid username and/or password.</p>
-            {% endif %}
-        </div>
+        <h1>PiPlayer</h1>
+        <form action="/login" method="post">
+            <p>username: <input type=text name=username></p>
+            <p>password: <input type=password name=password></p>
+            <p><input type=submit value=login></p>
+        </form>
+        {% if invalid_username is defined %}
+        <p>Invalid username and/or password.</p>
+        {% endif %}
     </body>
 </html>
