@@ -1,0 +1,47 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>PiPlayer</title>
+        <meta name="description" content="music">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/css/normalize.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <script src="/static/js/vendor/modernizr-2.8.0.min.js"></script>
+    </head>
+    <body>
+        <h1>PiPlayer</h1>
+        <p>Logged in as: {{ username }}</p>
+
+        <h2>Currently playing: <span id="currently_playing">nothing</span></h2>
+        <audio controls></audio>
+
+        <h2>Music:</h2>
+        <ul>
+        {% for artist in music.artists %}
+            <li>{{ artist|e }}
+                <ul>
+                {% for album in artist.albums %}
+                    <li>{{ album|e }}
+                        <ol>
+                            {% for song in album.songs %}
+                                <li class="song">{{ song|e }}
+                                    <div>{{ song.title|e }}</div>
+                                    <div>{{ song.path|e }}</div>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </li>
+                {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/static/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+        <script src="/static/js/plugins.js"></script>
+        <script src="/static/js/main.js"></script>
+    </body>
+</html>

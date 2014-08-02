@@ -1,0 +1,23 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>PiPlayer | login</title>
+        <meta name="description" content="login">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/css/normalize.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+    </head>
+    <body>
+        <h1>PiPlayer</h1>
+        <form action="/login" method="post">
+            <p>username: <input type=text name=username></p>
+            <p>password: <input type=password name=password></p>
+            <p><input type=submit value=login></p>
+        </form>
+        {% if invalid_username is defined %}
+        <p>Invalid username and/or password.</p>
+        {% endif %}
+    </body>
+</html>
