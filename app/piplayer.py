@@ -8,7 +8,6 @@ from flask import render_template
 from data_models import *
 
 import argparse
-import os
 
 app = Flask(__name__)
 valid_usernames = {}
@@ -39,8 +38,7 @@ def index():
         return redirect(url_for('login'))
     return render_template('index.html',
                            username=session['username'],
-                           music=getMusic(),
-                           currently_playing='nothing')
+                           music=getMusic())
 
 
 def getMusic():

@@ -57,7 +57,7 @@ class Album:
 
 class Song:
     def __init__(self, title, path):
-        self.path = path
+        self.path = path.decode('utf-8')
         self.title = title
 
     def __repr__(self):

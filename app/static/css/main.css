@@ -272,3 +272,7 @@ textarea {
 body {
     margin-left: 20px;
 }
+
+.song div {
+    display: none;
+}
