@@ -5,7 +5,10 @@ from flask import redirect
 from flask import session
 from flask import render_template
 
+from data_models import *
+
 import argparse
+import os
 
 app = Flask(__name__)
 valid_usernames = {}
@@ -19,7 +22,6 @@ def login():
     """
     if request.method == 'POST':
         req_username = request.form['username']
-        print valid_usernames
         if req_username in valid_usernames and valid_usernames.get(req_username) == request.form['password']:
             session['username'] = req_username
             return redirect(url_for('index'))
@@ -35,7 +37,24 @@ def index():
     """
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template('index.html', username=session['username'])
+
+    # Gather music information from disk
+    music = Music(u'./static/music/')
+    music.artists = [Artist(name) for name in os.listdir(music.directory)]
+    for artist in music.artists:
+        directory_artist = music.directory + artist.name
+        if os.path.isdir(directory_artist):
+            print os.listdir(directory_artist)
+            albums = [Album(title) for title in os.listdir(directory_artist)]
+            print artist, albums[0]
+            # music.artists[music.artists.index(artist)] = albums
+        else:
+            music.artists.remove(artist)
+
+    return render_template('index.html',
+                           username=session['username'],
+                           music=music,
+                           currently_playing='nothing')
 
 
 def setup():
@@ -56,4 +75,5 @@ def setup():
 
 if __name__ == '__main__':
     setup()
+    app.debug = True
     app.run()
