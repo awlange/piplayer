@@ -22,11 +22,16 @@
         <h2>Music:</h2>
         <ul>
         {% for artist in music.artists %}
-            <li>{{ artist|e }}</li>
-            <li>
+            <li>{{ artist|e }}
                 <ul>
-                {% for album in music.artists.album %}
-                    <li>{{ album|e }}</li>
+                {% for album in artist.albums %}
+                    <li>{{ album|e }}
+                        <ul>
+                            {% for song in album.songs %}
+                                <li>{{ song|e }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
                 {% endfor %}
                 </ul>
             </li>
