@@ -21,6 +21,7 @@ class Music:
                 self.artists_map[name] = artist
 
         self.artists = self.artists_map.keys()
+        self.artists.sort()
 
 
 class Artist:
