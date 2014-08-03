@@ -20,22 +20,7 @@
         <h2>Music:</h2>
         <ul>
         {% for artist in music.artists %}
-            <li>{{ artist|e }}
-                <ul>
-                {% for album in artist.albums %}
-                    <li>{{ album|e }}
-                        <ol>
-                            {% for song in album.songs %}
-                                <li class="song">{{ song|e }}
-                                    <div>{{ song.title|e }}</div>
-                                    <div>{{ song.path|e }}</div>
-                                </li>
-                            {% endfor %}
-                        </ol>
-                    </li>
-                {% endfor %}
-                </ul>
-            </li>
+            <li class="artist">{{ artist|e }}</li>
         {% endfor %}
         </ul>
 
