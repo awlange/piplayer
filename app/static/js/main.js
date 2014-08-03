@@ -7,7 +7,7 @@ function artistClick() {
     // respond to clicking on artists, lazy load albums
     $(".artist").click( function(e) {
         var artist = $(this);
-        if (artist.children().length == 0) {
+        if (!artist.hasClass("albums_fetched")) {
             // AJAX call to get albums of the artist and append html
             $.ajax({
                 type: "POST",
@@ -15,12 +15,25 @@ function artistClick() {
                 data: { artist: artist.text() }
             })
             .done( function(html) {
-                artist.append(html);
+                artist.after(html);
                 // refresh album clicks
                 albumClick();
             });
+            artist.addClass("albums_fetched");
         }
+        expandCollapse(artist, ".artist");
     });
+}
+
+function expandCollapse(selection, untilClass) {
+    // expand/collapse elements
+    if (selection.hasClass("expanded")) {
+        selection.removeClass("expanded");
+        selection.nextUntil(untilClass).addClass("hidden");
+    } else {
+        selection.addClass("expanded");
+        selection.nextUntil(untilClass).removeClass("hidden");
+    }
 }
 
 function albumClick() {
@@ -29,7 +42,7 @@ function albumClick() {
         var album = $(this);
         var artist = album.parent().parent();
         var artistName = getElementText(artist);
-        if (album.children().length == 0) {
+        if (!album.hasClass("songs_fetched")) {
             // AJAX call to get songs of the album and append html
             $.ajax({
                 type: "POST",
@@ -37,11 +50,13 @@ function albumClick() {
                 data: { artist: artistName, album: album.text() }
             })
             .done( function(html) {
-                album.append(html);
+                album.after(html);
                 // refresh song clicks
                 songClick();
             });
+            album.addClass("songs_fetched");
         }
+        expandCollapse(album, ".album");
     });
 }
 
@@ -109,3 +124,4 @@ function updatePlayButton() {
         button[0].className = "play"
     } 
 }
+
