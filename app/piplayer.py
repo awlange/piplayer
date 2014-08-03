@@ -12,7 +12,7 @@ import argparse
 # Globally available objects
 app = Flask(__name__)
 valid_usernames = {}
-music = Music(u'./static/music')
+music = Music(u'./static/music')  # symlinked music in static directory
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -56,7 +56,38 @@ def artist():
     if artist is None:
         return "artist not found", 404
     artist.load_albums()
-    html = [u'<ul>\n', u''.join(u''.join((u'<li>', album.title, u'</li>\n')) for album in artist.albums), u'</ul>\n']
+    html = [u'<ul>',
+            u''.join(u''.join((u'<li class=\"album\">', album.title, u'</li>')) for album in artist.albums.values()),
+            u'</ul>']
+    return u''.join(html)
+
+
+@app.route('/album', methods=['POST'])
+def album():
+    """
+    Artist handler, expects AJAX POSTs
+    Redirect to login page if session not established
+    """
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    artist_name = request.form['artist']
+    print artist_name
+    artist = music.artists_map.get(artist_name, None)
+    if artist is None:
+        return "artist not found", 404
+    album_title = request.form['album']
+    album = artist.albums.get(album_title.encode('utf-8'), None)
+    if album is None:
+        print 'fuck'
+        return "album not found", 404
+    album.load_songs()
+    html = list(u'<ul>')
+    for song in album.songs:
+        html.append(u''.join(u''.join((u'<li class=\"song\">', song.title))))
+        html.append(u''.join(u''.join((u'<div>', song.title, u'</div>'))))
+        html.append(u''.join(u''.join((u'<div>', song.path, u'</div>'))))
+        html.append(u'</li>')
+    html.append(u'</ul>')
     return u''.join(html)
 
 

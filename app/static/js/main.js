@@ -1,7 +1,5 @@
 $(document).ready( function(){
     artistClick();
-    //albumClick();
-    songClick();
 });
 
 function songClick() {
@@ -43,6 +41,32 @@ function artistClick() {
             })
             .done( function(html) {
                 artist.append(html);
+                // refresh album clicks
+                albumClick();
+            });
+        }
+    });
+}
+
+function albumClick() {
+    // respond to clicking on albums, lazy load songs
+    $(".album").click( function(e) {
+        var album = $(this);
+        var artist = album.parent().parent();
+        var artistName = artist.contents().filter( function(){
+            return this.nodeType == 3;  // text of the node
+        })[0].nodeValue;
+        if (album.children().length == 0) {
+            // AJAX call to get songs of the album and append html
+            $.ajax({
+                type: "POST",
+                url: "album",
+                data: { artist: artistName, album: album.text() }
+            })
+            .done( function(html) {
+                album.append(html);
+                // refresh song clicks
+                songClick();
             });
         }
     });

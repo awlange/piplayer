@@ -17,11 +17,10 @@ class Music:
             path_artist = u'/'.join((self.path, name)).encode('utf-8')
             if os.path.isdir(path_artist):
                 artist = Artist(name, path_artist)
-                #artist.load_albums()
                 self.artists_map[name] = artist
 
-        self.artists = self.artists_map.keys()
-        self.artists.sort()
+        # Case insensitive sort by artist names
+        self.artists = sorted(self.artists_map.keys(), key=lambda s: s.lower())
 
 
 class Artist:
@@ -34,13 +33,12 @@ class Artist:
         return self.name
 
     def load_albums(self):
-        self.albums = []
+        self.albums = {}
         for title in os.listdir(self.path):
             path_title = u'/'.join((self.path.decode('utf-8'), title.decode('utf-8'))).encode('utf-8')
             if os.path.isdir(path_title):
                 album = Album(title.decode('utf-8'), path_title)
-                #album.load_songs()
-                self.albums.append(album)
+                self.albums[title] = album
 
 
 class Album:
