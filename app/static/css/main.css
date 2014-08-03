@@ -286,7 +286,7 @@ body {
     border-radius: 4px;
 }
 
-ul {
+ul, ol {
     list-style-type: none;
     margin: 0 auto;
     padding: 0;
@@ -304,7 +304,7 @@ li.album {
 }
 
 li.song {
-    padding-left: 80px;
+    margin-left: 80px;
 }
 
 .hidden, .hidden_always {

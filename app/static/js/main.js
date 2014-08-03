@@ -25,23 +25,12 @@ function artistClick() {
     });
 }
 
-function expandCollapse(selection, untilClass) {
-    // expand/collapse elements
-    if (selection.hasClass("expanded")) {
-        selection.removeClass("expanded");
-        selection.nextUntil(untilClass).addClass("hidden");
-    } else {
-        selection.addClass("expanded");
-        selection.nextUntil(untilClass).removeClass("hidden");
-    }
-}
-
 function albumClick() {
     // respond to clicking on albums, lazy load songs
     $(".album").click( function(e) {
         var album = $(this);
-        var artist = album.parent().parent();
-        var artistName = getElementText(artist);
+        var artist = album.parent().prev();
+        var artistName = artist.text();
         if (!album.hasClass("songs_fetched")) {
             // AJAX call to get songs of the album and append html
             $.ajax({
@@ -62,18 +51,17 @@ function albumClick() {
 
 function songClick() {
     // respond to clicking on song
-    var song = $(".song");
-    song.click( function(e) {
+    $(".song").click( function(e) {
         updateCurrentlyPlaying($(this));
         updateAudio($(this), false);
     });  
 }
 
 function updateCurrentlyPlaying(song) {
-    var album = song.parent().parent();
-    var artist = album.parent().parent();
-    var artistName = getElementText(artist);
-    var albumTitle = getElementText(album);
+    var album = song.parent().prev();
+    var artist = album.parent().prev();
+    var artistName = artist.text();
+    var albumTitle = album.text();
     var songTitle = getElementText(song);
     $("#currently_playing").replaceWith("<p id=\"currently_playing\">" + 
         artistName + " / " + albumTitle + " / " + songTitle + "</p>");
@@ -91,6 +79,9 @@ function updateAudio(song, startPlay) {
     // load song, optionally play song
     var audio = $("audio")[0];
     audio.pause();
+    var button = $("#play_button")[0];
+    button.className = "";
+    button.className = "play"
     audio.load();
     if (startPlay) {
         updatePlayButton();
@@ -104,6 +95,17 @@ function getElementText(element) {
     })[0].nodeValue;
 }
 
+function expandCollapse(selection, untilClass) {
+    // expand/collapse elements
+    if (selection.hasClass("expanded")) {
+        selection.removeClass("expanded");
+        selection.nextUntil(untilClass).addClass("hidden");
+    } else {
+        selection.addClass("expanded");
+        selection.nextUntil(untilClass).removeClass("hidden");
+    }
+}
+
 function controller() {
     $("#play_button").click( function() {
         updatePlayButton();
@@ -111,7 +113,6 @@ function controller() {
 }
 
 function updatePlayButton() {
-    console.log("trying to update");
     var audio = $("audio")[0];
     var button = $("#play_button");
     if (audio.paused) {
