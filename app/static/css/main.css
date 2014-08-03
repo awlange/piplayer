@@ -270,9 +270,44 @@ textarea {
    ========================================================================== */
 
 body {
-    margin-left: 20px;
+    padding-left: 20px;
+    color: #34495E;
+    background-color: #fefefe;
+}
+
+#page-wrapper {
+    padding-left: 0px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0 4px;
+}
+
+ul li ul {
+    padding-left: 40px;
+}
+
+ol {
+    padding-left: 80px;
 }
 
 .song div {
-    display: none;
+    display: none;  // to hide the path data
+}
+
+#music {
+    width: 40em;
+    padding: 4px;
+    background-color: #34495E;
+    border-radius: 4px;
+}
+
+.artist {
+    color: #34495E;
+    background-color: white;
+    padding: 1px 5px;
+    margin: 2px auto;
+    border-radius: 4px;
 }

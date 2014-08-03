@@ -81,13 +81,13 @@ def album():
         print 'fuck'
         return "album not found", 404
     album.load_songs()
-    html = list(u'<ul>')
+    html = list(u'<ol>')
     for song in album.songs:
         html.append(u''.join(u''.join((u'<li class=\"song\">', song.title))))
         html.append(u''.join(u''.join((u'<div>', song.title, u'</div>'))))
         html.append(u''.join(u''.join((u'<div>', song.path, u'</div>'))))
         html.append(u'</li>')
-    html.append(u'</ul>')
+    html.append(u'</ol>')
     return u''.join(html)
 
 
