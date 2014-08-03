@@ -272,7 +272,6 @@ textarea {
 body {
     padding-left: 20px;
     color: #34495E;
-    background-color: #fefefe;
 }
 
 #page-wrapper {
@@ -293,13 +292,13 @@ ol {
     padding-left: 80px;
 }
 
-.song div {
-    display: none;  // to hide the path data
+.hidden {
+    display: none;
 }
 
 #music {
     width: 40em;
-    padding: 4px;
+    padding: 5px 4px;
     background-color: #34495E;
     border-radius: 4px;
 }
@@ -310,4 +309,53 @@ ol {
     padding: 1px 5px;
     margin: 2px auto;
     border-radius: 4px;
+}
+.artist:hover, .album:hover, .song:hover {
+    background-color: #16A085;
+}
+
+/*
+  Adding, playing songs
+*/
+
+.song {
+    clear: both;
+}
+
+.song_play {
+    float: right;
+}
+
+.song_add {
+    float: right;
+}
+
+/*
+  Stuff for the audio controller
+*/
+
+audio {
+	width: 480px;
+	height: 60px;
+}
+
+#play_button {
+    height: 60px;
+    width: 60px;
+    border: none;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+
+.play{
+    background: url('/static/img/play.png');
+}
+.pause{
+    background: url('/static/img/pause.png');
+}
+
+h2 {
+    clear: both;
 }
