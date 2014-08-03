@@ -66,7 +66,7 @@ function updateCurrentlyPlaying(song) {
 
 function updateAudio(song, startPlay) {
     // path is added as a hidden html element after AJAX call
-    var path = song.children().first().text();
+    var path = song.children().last().text();
     if ($("source").length) {
         $("source").attr("src", path);
     } else {

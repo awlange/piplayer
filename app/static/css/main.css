@@ -278,10 +278,22 @@ body {
     padding-left: 0px;
 }
 
+
+#music {
+    width: 95%;
+    padding: 5px 4px;
+    background-color: #34495E;
+    border-radius: 4px;
+}
+
 ul {
     list-style-type: none;
     margin: 0 auto;
     padding: 0 4px;
+}
+
+li {
+    border-radius: 4px;
 }
 
 ul li ul {
@@ -290,17 +302,11 @@ ul li ul {
 
 ol {
     padding-left: 80px;
+    border-radius: 4px;
 }
 
 .hidden {
     display: none;
-}
-
-#music {
-    width: 40em;
-    padding: 5px 4px;
-    background-color: #34495E;
-    border-radius: 4px;
 }
 
 .artist {
@@ -308,10 +314,19 @@ ol {
     background-color: white;
     padding: 1px 5px;
     margin: 2px auto;
-    border-radius: 4px;
 }
-.artist:hover, .album:hover, .song:hover {
+
+/*
+  hover coloring for ease of viewing, increasingly lighter green
+*/
+.artist:hover {
     background-color: #16A085;
+}
+.album:hover {
+    background-color: #2ABB9B;
+}
+.song:hover {
+    background-color: #36D7B7;
 }
 
 /*

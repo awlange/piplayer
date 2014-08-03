@@ -87,8 +87,8 @@ def album():
     html = list(u'<ol>')
     for song in album.songs:
         html.append(u''.join(u''.join((u'<li class=\"song\">', song.title))))
-        #html.append(u''.join((u'<div class=\"song_play\">[&gt;]</div>')))
-        #html.append(u''.join((u'<div class=\"song_add\">[+]</div>')))
+        html.append(u''.join((u'<div class=\"song_play\">[&gt;]</div>')))
+        html.append(u''.join((u'<div class=\"song_add\">[+]</div>')))
         html.append(u''.join(u''.join((u'<div class=\"hidden\">', song.path, u'</div>'))))
         html.append(u'</li>')
     html.append(u'</ol>')
