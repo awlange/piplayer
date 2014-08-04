@@ -51,10 +51,16 @@ function albumClick() {
 
 function songClick() {
     // respond to clicking on song
-    $(".song").click( function(e) {
-        updateCurrentlyPlaying($(this));
-        updateAudio($(this), false);
-    });  
+    $(".song_add").click( function(e) {
+        var song = $(this).parent();
+        updateCurrentlyPlaying(song);
+        updateAudio(song, false);
+    });
+    $(".song_play").click( function(e) {
+        var song = $(this).parent();
+        updateCurrentlyPlaying(song);
+        updateAudio(song, true);
+    }); 
 }
 
 function updateCurrentlyPlaying(song) {
