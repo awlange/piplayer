@@ -1,6 +1,125 @@
+/* ------------------------------------------------------------------
+ Data models
+ --------------------------------------------------------------------*/
+
+function Song(artistName, albumTitle, songTitle, path) {
+    this.artistName = artistName;
+    this.albumTitle = albumTitle;
+    this.songTitle = songTitle;
+    this.path = path;
+}
+
+Song.createSongFromSelection = function(songSelection) {
+    var album = songSelection.parent().prev();
+    var artist = album.parent().prev();
+    var artistName = artist.text();
+    var albumTitle = album.text();
+    var songTitle = getElementText(songSelection);
+    var path = songSelection.children().last().text();    
+    return new Song(artistName, albumTitle, songTitle, path);
+};
+
+function MusicPlayer() {
+    var currentSongIndex = null;
+    var playList = [];
+
+    this.addSongToPlayList = function(song) {
+        this.playList = playList.push(song);
+    }
+
+    this.clearPlayList = function() {
+        this.currentSongIndex = null;
+        this.playList = [];
+    }
+
+    this.getNextSong = function() {
+        if (this.playList.length == 0) {
+            this.currentSongIndex = null;
+            return null;
+        }
+
+        if (this.currentSongIndex == null) {
+            this.currentSongIndex = 0;
+        } else {
+            var nextIndex = this.currentSongIndex + 1;
+            if (nextIndex >= this.playList.length) {
+                this.currentSongIndex = null;
+            } else {
+                this.currentSongIndex = nextIndex;
+            }
+        }
+
+        return this.playList[this.currentSongIndex];
+    }
+
+    this.updateCurrentlyPlayingHTML = function(song) {
+        $("#currently_playing").replaceWith("<p id=\"currently_playing\">" + 
+            song.artistName + " / " + song.albumTitle + " / " + song.songTitle + "</p>");    
+    }
+
+    this.updateAudioHTML = function(song) {
+        // path is added as a hidden html element after AJAX call
+        if ($("source").length) {
+            $("source").attr("src", song.path);
+        } else {
+            $("audio").append("<source src=\"" + song.path + "\" type=\"audio/mpeg\">");
+        }
+
+    }
+
+    this.loadSongFromSrc = function(startPlay) {
+        // load song, optionally play song
+        var audio = $("audio")[0];
+        audio.pause();
+        var button = $("#play_button")[0];
+        button.className = "";
+        button.className = "play"
+        audio.load();
+        if (startPlay) {
+            audio.play();
+            button.className = "";
+            button.className = "pause";
+        }
+    }
+
+    // this.playNextSong = function() {
+    //     var song = this.getNextSong();
+    //     this.updateCurrentlyPlayingHTML(song);
+    //     this.updateAudioHTML(song);
+    //     this.loadSong(true);
+    // }
+}
+
+MusicPlayer.updatePlayButton = function() {
+    var audio = $("audio")[0];
+    var button = $("#play_button");
+    if (audio.paused) {
+        audio.play();
+        button[0].className = "";
+        button[0].className = "pause";
+    } else {
+        audio.pause();
+        button[0].className = "";
+        button[0].className = "play"
+    } 
+}
+
+MusicPlayer.prototype.playerControls = function() {
+    $("#play_button").click( function() {
+        MusicPlayer.updatePlayButton();
+    });
+}
+
+// Globally visible MusicPlayer object
+var musicPlayer = new MusicPlayer();
+
+/* ------------------------------------------------------------------
+ jQuery based responses
+ --------------------------------------------------------------------*/
+
 $(document).ready( function(){
     artistClick();
-    controller();
+    musicPlayer.playerControls();
 });
 
 function artistClick() {
@@ -51,47 +170,13 @@ function albumClick() {
 
 function songClick() {
     // respond to clicking on song
-    $(".song_add").click( function(e) {
-        var song = $(this).parent();
-        updateCurrentlyPlaying(song);
-        updateAudio(song, false);
+    $(".song").click( function(e) {
+        var song = Song.createSongFromSelection($(this));
+        musicPlayer.addSongToPlayList(song);
+        musicPlayer.updateCurrentlyPlayingHTML(song);
+        musicPlayer.updateAudioHTML(song);
+        musicPlayer.loadSongFromSrc(true);
     });
-    $(".song_play").click( function(e) {
-        var song = $(this).parent();
-        updateCurrentlyPlaying(song);
-        updateAudio(song, true);
-    }); 
-}
-
-function updateCurrentlyPlaying(song) {
-    var album = song.parent().prev();
-    var artist = album.parent().prev();
-    var artistName = artist.text();
-    var albumTitle = album.text();
-    var songTitle = getElementText(song);
-    $("#currently_playing").replaceWith("<p id=\"currently_playing\">" + 
-        artistName + " / " + albumTitle + " / " + songTitle + "</p>");
-}
-
-function updateAudio(song, startPlay) {
-    // path is added as a hidden html element after AJAX call
-    var path = song.children().last().text();
-    if ($("source").length) {
-        $("source").attr("src", path);
-    } else {
-        $("audio").append("<source src=\"" + path + "\" type=\"audio/mpeg\">");
-    }
-
-    // load song, optionally play song
-    var audio = $("audio")[0];
-    audio.pause();
-    var button = $("#play_button")[0];
-    button.className = "";
-    button.className = "play"
-    audio.load();
-    if (startPlay) {
-        updatePlayButton();
-    }
 }
 
 function getElementText(element) {
@@ -111,24 +196,3 @@ function expandCollapse(selection, untilClass) {
         selection.nextUntil(untilClass).removeClass("hidden");
     }
 }
-
-function controller() {
-    $("#play_button").click( function() {
-        updatePlayButton();
-    });
-}
-
-function updatePlayButton() {
-    var audio = $("audio")[0];
-    var button = $("#play_button");
-    if (audio.paused) {
-        audio.play();
-        button[0].className = "";
-        button[0].className = "pause";
-    } else {
-        audio.pause();
-        button[0].className = "";
-        button[0].className = "play"
-    } 
-}
-
