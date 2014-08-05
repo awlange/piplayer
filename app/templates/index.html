@@ -11,18 +11,32 @@
         <script src="/static/js/vendor/modernizr-2.8.0.min.js"></script>
     </head>
     <body>
-        <h1>PiPlayer</h1>
-        <p>Logged in as: {{ username }}</p>
+        <div id="page-wrapper">
+            <h1>PiPlayer</h1>
+            <p>Logged in as: {{ username }}</p>
 
-        <h2>Currently playing: <span id="currently_playing">nothing</span></h2>
-        <audio controls></audio>
+            <audio></audio>
+            <div id="controller">
+                <button id="play_button" class="play"></button>
+            </div>
 
-        <h2>Music:</h2>
-        <ul>
-        {% for artist in music.artists %}
-            <li class="artist">{{ artist|e }}</li>
-        {% endfor %}
-        </ul>
+            <h2>Currently playing:</h2>
+            <p id="currently_playing">nothing</p>
+
+            <h2>Playlist:</h2>
+            <div id="play_list_wrapper">
+                <ul id="play_list"></ul>
+            </div>
+
+            <h2>Music:</h2>
+            <div id="music">
+                <ul>
+                {% for artist in music.artists %}
+                    <li class="artist">{{ artist|e }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="/static/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>

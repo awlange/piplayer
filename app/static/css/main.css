@@ -115,7 +115,7 @@ textarea {
  * Hide visually and from screen readers: h5bp.com/u
  */
 
-.hidden {
+.hidden, .hidden_always {
     display: none !important;
     visibility: hidden;
 }
@@ -270,9 +270,92 @@ textarea {
    ========================================================================== */
 
 body {
-    margin-left: 20px;
+    padding-left: 20px;
+    color: #34495E;
 }
 
-.song div {
-    display: none;
+#page-wrapper {
+    padding-left: 0px;
+}
+
+
+#music, #play_list_wrapper {
+    width: 95%;
+    padding: 5px 7px;
+    background-color: #34495E;
+    border-radius: 4px;
+}
+
+ul, ol {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+}
+
+li {
+    border-radius: 4px;
+    background-color: white;
+    padding: 0 4px;
+    margin: 2px auto;
+}
+
+li.album {
+    margin-left: 40px;
+}
+
+li.song {
+    margin-left: 80px;
+}
+
+/*
+  hover coloring for ease of viewing
+*/
+.artist:hover, .album:hover, .song:hover {
+    background-color: #16A085;
+}
+
+/*
+  Adding, playing songs
+*/
+
+.song {
+    clear: both;
+}
+
+.song_play {
+    float: right;
+}
+
+.song_add {
+    float: right;
+}
+
+/*
+  Stuff for the audio controller
+*/
+
+audio {
+	width: 480px;
+	height: 60px;
+}
+
+#play_button {
+    height: 60px;
+    width: 60px;
+    border: none;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+
+.play{
+    background: url('/static/img/play.png');
+}
+.pause{
+    background: url('/static/img/pause.png');
+}
+
+h2 {
+    clear: both;
 }

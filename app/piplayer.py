@@ -51,10 +51,12 @@ def artist():
     """
     if 'username' not in session:
         return redirect(url_for('login'))
+
     artist_name = request.form['artist']
     artist = music.artists_map.get(artist_name, None)
     if artist is None:
         return "artist not found", 404
+
     artist.load_albums()
     html = [u'<ul>',
             u''.join(u''.join((u'<li class=\"album\">', album.title, u'</li>')) for album in artist.albums.values()),
@@ -70,24 +72,26 @@ def album():
     """
     if 'username' not in session:
         return redirect(url_for('login'))
+
     artist_name = request.form['artist']
-    print artist_name
     artist = music.artists_map.get(artist_name, None)
     if artist is None:
         return "artist not found", 404
+
     album_title = request.form['album']
     album = artist.albums.get(album_title.encode('utf-8'), None)
     if album is None:
-        print 'fuck'
         return "album not found", 404
+
     album.load_songs()
-    html = list(u'<ul>')
+    html = list(u'<ol>')
     for song in album.songs:
         html.append(u''.join(u''.join((u'<li class=\"song\">', song.title))))
-        html.append(u''.join(u''.join((u'<div>', song.title, u'</div>'))))
-        html.append(u''.join(u''.join((u'<div>', song.path, u'</div>'))))
+        html.append(u''.join(u'<div class=\"song_play\">[&gt;]</div>'))
+        html.append(u''.join(u'<div class=\"song_add\">[+]</div>'))
+        html.append(u''.join(u''.join((u'<div class=\"hidden_always\">', song.path, u'</div>'))))
         html.append(u'</li>')
-    html.append(u'</ul>')
+    html.append(u'</ol>')
     return u''.join(html)
 
 
