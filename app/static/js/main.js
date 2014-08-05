@@ -7,6 +7,11 @@ function Song(artistName, albumTitle, songTitle, path) {
     this.albumTitle = albumTitle;
     this.songTitle = songTitle;
     this.path = path;
+
+    this.toString = function() {
+        var delim = " / ";
+        return this.artistName.concat(delim, this.albumTitle, delim, this.songTitle)
+    }
 }
 
 Song.createSongFromSelection = function(songSelection) {
@@ -25,6 +30,10 @@ function MusicPlayer() {
 
     this.addSongToPlayList = function(song) {
         this.playList.push(song);
+        // update the HTML too
+        var playListSelection = $("#play_list");
+        var html = "<li>" + song.toString() + "</li>";
+        playListSelection.append(html);
         return this;
     }
 

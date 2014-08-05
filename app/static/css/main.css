@@ -115,7 +115,7 @@ textarea {
  * Hide visually and from screen readers: h5bp.com/u
  */
 
-.hidden {
+.hidden, .hidden_always {
     display: none !important;
     visibility: hidden;
 }
@@ -279,7 +279,7 @@ body {
 }
 
 
-#music {
+#music, #play_list_wrapper {
     width: 95%;
     padding: 5px 7px;
     background-color: #34495E;
@@ -305,10 +305,6 @@ li.album {
 
 li.song {
     margin-left: 80px;
-}
-
-.hidden, .hidden_always {
-    display: none;
 }
 
 /*

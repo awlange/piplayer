@@ -15,12 +15,17 @@
             <h1>PiPlayer</h1>
             <p>Logged in as: {{ username }}</p>
 
-            <h2>Currently playing:</h2>
-            <p id="currently_playing">nothing</p>
-
             <audio></audio>
             <div id="controller">
                 <button id="play_button" class="play"></button>
+            </div>
+
+            <h2>Currently playing:</h2>
+            <p id="currently_playing">nothing</p>
+
+            <h2>Playlist:</h2>
+            <div id="play_list_wrapper">
+                <ul id="play_list"></ul>
             </div>
 
             <h2>Music:</h2>
