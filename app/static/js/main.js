@@ -17,77 +17,85 @@ Song.createSongFromSelection = function(songSelection) {
     var songTitle = getElementText(songSelection);
     var path = songSelection.children().last().text();    
     return new Song(artistName, albumTitle, songTitle, path);
-};
+}
 
 function MusicPlayer() {
-    var currentSongIndex = null;
-    var playList = [];
+    this.currentSongIndex = null;
+    this.playList = [];
 
     this.addSongToPlayList = function(song) {
-        this.playList = playList.push(song);
+        this.playList.push(song);
+        return this;
     }
 
     this.clearPlayList = function() {
         this.currentSongIndex = null;
         this.playList = [];
+        return this;
+    }
+
+    this.getCurrentSong = function() {
+        return (this.currentSongIndex == null) ? null : this.playList[this.currentSongIndex];
     }
 
     this.getNextSong = function() {
-        if (this.playList.length == 0) {
-            this.currentSongIndex = null;
+        if (this.currentSongIndex == null) {
             return null;
         }
+        var nextIndex = this.currentSongIndex + 1;
+        if (nextIndex >= this.playList.length) {
+            return null;
+        }
+        return this.playList[nextIndex];
+    }
 
-        if (this.currentSongIndex == null) {
-            this.currentSongIndex = 0;
-        } else {
-            var nextIndex = this.currentSongIndex + 1;
-            if (nextIndex >= this.playList.length) {
-                this.currentSongIndex = null;
-            } else {
-                this.currentSongIndex = nextIndex;
+    this.playCurrentSong = function() {
+        this.playSong(this.getCurrentSong());
+    }
+
+    this.playNextSong = function() {
+        this.playSong(this.getNextSong()); 
+    }
+
+    this.playSong = function(song) {
+        if (song != null) {
+            var index = this.playList.indexOf(song);
+            if (index >= 0) {
+                MusicPlayer.updateCurrentlyPlayingHTML(song);
+                MusicPlayer.updateAudioHTML(song);
+                MusicPlayer.loadSongFromSrc(true);
+                this.currentSongIndex = index;
             }
-        }
-
-        return this.playList[this.currentSongIndex];
+        }   
     }
+}
 
-    this.updateCurrentlyPlayingHTML = function(song) {
-        $("#currently_playing").replaceWith("<p id=\"currently_playing\">" + 
-            song.artistName + " / " + song.albumTitle + " / " + song.songTitle + "</p>");    
+MusicPlayer.updateCurrentlyPlayingHTML = function(song) {
+    $("#currently_playing").replaceWith("<p id=\"currently_playing\">" + 
+        song.artistName + " / " + song.albumTitle + " / " + song.songTitle + "</p>");    
+}
+
+MusicPlayer.updateAudioHTML = function(song) {
+    if ($("source").length) {
+        $("source").attr("src", song.path);
+    } else {
+        $("audio").append("<source src=\"" + song.path + "\" type=\"audio/mpeg\">");
     }
+}
 
-    this.updateAudioHTML = function(song) {
-        // path is added as a hidden html element after AJAX call
-        if ($("source").length) {
-            $("source").attr("src", song.path);
-        } else {
-            $("audio").append("<source src=\"" + song.path + "\" type=\"audio/mpeg\">");
-        }
-
-    }
-
-    this.loadSongFromSrc = function(startPlay) {
-        // load song, optionally play song
-        var audio = $("audio")[0];
-        audio.pause();
-        var button = $("#play_button")[0];
+MusicPlayer.loadSongFromSrc = function(startPlay) {
+    // load song, optionally play song
+    var audio = $("audio")[0];
+    audio.pause();
+    var button = $("#play_button")[0];
+    button.className = "";
+    button.className = "play"
+    audio.load();
+    if (startPlay) {
+        audio.play();
         button.className = "";
-        button.className = "play"
-        audio.load();
-        if (startPlay) {
-            audio.play();
-            button.className = "";
-            button.className = "pause";
-        }
+        button.className = "pause";
     }
-
-    // this.playNextSong = function() {
-    //     var song = this.getNextSong();
-    //     this.updateCurrentlyPlayingHTML(song);
-    //     this.updateAudioHTML(song);
-    //     this.loadSong(true);
-    // }
 }
 
 MusicPlayer.updatePlayButton = function() {
@@ -114,7 +122,7 @@ MusicPlayer.prototype.playerControls = function() {
 var musicPlayer = new MusicPlayer();
 
 /* ------------------------------------------------------------------
- jQuery based responses
+ jQuery based UI responses
  --------------------------------------------------------------------*/
 
 $(document).ready( function(){
@@ -172,10 +180,7 @@ function songClick() {
     // respond to clicking on song
     $(".song").click( function(e) {
         var song = Song.createSongFromSelection($(this));
-        musicPlayer.addSongToPlayList(song);
-        musicPlayer.updateCurrentlyPlayingHTML(song);
-        musicPlayer.updateAudioHTML(song);
-        musicPlayer.loadSongFromSrc(true);
+        musicPlayer.addSongToPlayList(song).playSong(song);
     });
 }
 
