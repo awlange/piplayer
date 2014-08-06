@@ -39,11 +39,10 @@ function MusicPlayer() {
     this.addSongToPlayList = function(song) {
         this.playList.push(song);
         // update the HTML too
-        var playListSelection = $("#play_list");
         var index = this.playList.length - 1;
         var html = "<li class=\"playListSong\">" + song.toString() + 
             "<div class=\"hidden_always\">" + index + "</li>";
-        playListSelection.append(html);
+        $("#play_list").append(html);
         // register the click event
         playListSongClick();
         return this;
@@ -52,6 +51,8 @@ function MusicPlayer() {
     this.clearPlayList = function() {
         this.currentSongIndex = null;
         this.playList = [];
+        // update HTML
+        $("#play_list").empty();
         return this;
     }
 
@@ -116,18 +117,26 @@ MusicPlayer.updateAudioHTML = function(song) {
     }
 }
 
-MusicPlayer.loadSongFromSrc = function(startPlay) {
-    // load song, optionally play song
-    var audio = $("audio")[0];
-    audio.pause();
+MusicPlayer.play = function() {
+    $("audio")[0].play();
     var button = $("#play_button")[0];
     button.className = "";
-    button.className = "play"
-    audio.load();
+    button.className = "pause"    
+}
+
+MusicPlayer.pause = function() {
+    $("audio")[0].pause();
+    var button = $("#play_button")[0];
+    button.className = "";
+    button.className = "play"    
+}
+
+MusicPlayer.loadSongFromSrc = function(startPlay) {
+    // load song, optionally play song
+    MusicPlayer.pause();
+    $("audio")[0].load();
     if (startPlay) {
-        audio.play();
-        button.className = "";
-        button.className = "pause";
+        MusicPlayer.play();
     }
 }
 
@@ -160,6 +169,7 @@ var musicPlayer = new MusicPlayer();
 
 $(document).ready( function(){
     audioSongEnded();
+    clearPlayListClick();
     artistClick();
     musicPlayer.playerControls();
 });
@@ -167,6 +177,13 @@ $(document).ready( function(){
 function audioSongEnded() {
     $("audio").on("ended", function() {
         musicPlayer.playNextSong();
+    });
+}
+
+function clearPlayListClick() {
+    $("#clear_play_list").click( function() {
+        MusicPlayer.pause();
+        musicPlayer.clearPlayList();
     });
 }
 

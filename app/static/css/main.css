@@ -316,10 +316,25 @@ li.song {
     height: 5em;
 }
 
+#clear_play_list {
+    background-color: #34495E;
+    color: white;
+    border-radius: 4px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 5em;
+}
+
+#clear_play_list p {
+    margin: 1em auto;
+    padding: 4px;
+    text-align: center;
+}
+
 /*
   hover coloring for ease of viewing
 */
-.artist:hover, .album:hover, .song:hover {
+.artist:hover, .album:hover, .song:hover, .playListSong:hover {
     background-color: #16A085;
 }
 
