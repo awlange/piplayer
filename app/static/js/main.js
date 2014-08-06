@@ -12,6 +12,14 @@ function Song(artistName, albumTitle, songTitle, path) {
         var delim = " / ";
         return this.artistName.concat(delim, this.albumTitle, delim, this.songTitle)
     }
+
+    this.equals = function(song) {
+        if (this.artistName == song.artistName && this.albumTitle == song.albumTitle &&
+            this.songTitle == song.songTitle && this.path == song.path) {
+            return true;
+        }
+        return false;
+    }
 }
 
 Song.createSongFromSelection = function(songSelection) {
@@ -32,8 +40,12 @@ function MusicPlayer() {
         this.playList.push(song);
         // update the HTML too
         var playListSelection = $("#play_list");
-        var html = "<li>" + song.toString() + "</li>";
+        var index = this.playList.length - 1;
+        var html = "<li class=\"playListSong\">" + song.toString() + 
+            "<div class=\"hidden_always\">" + index + "</li>";
         playListSelection.append(html);
+        // register the click event
+        playListSongClick();
         return this;
     }
 
@@ -70,12 +82,24 @@ function MusicPlayer() {
         if (song != null) {
             var index = this.playList.indexOf(song);
             if (index >= 0) {
-                MusicPlayer.updateCurrentlyPlayingHTML(song);
-                MusicPlayer.updateAudioHTML(song);
-                MusicPlayer.loadSongFromSrc(true);
+                privatePlaySong(song);
                 this.currentSongIndex = index;
             }
         }   
+    }
+
+    this.playSongAtIndex = function(index) {
+        if (index < 0 || index >= this.playList.length) {
+            return;
+        }
+        privatePlaySong(this.playList[index]);
+        this.currentSongIndex = index; 
+    }
+
+    var privatePlaySong = function(song) {
+        MusicPlayer.updateCurrentlyPlayingHTML(song);
+        MusicPlayer.updateAudioHTML(song);
+        MusicPlayer.loadSongFromSrc(true);
     }
 }
 
@@ -135,9 +159,16 @@ var musicPlayer = new MusicPlayer();
  --------------------------------------------------------------------*/
 
 $(document).ready( function(){
+    audioSongEnded();
     artistClick();
     musicPlayer.playerControls();
 });
+
+function audioSongEnded() {
+    $("audio").on("ended", function() {
+        musicPlayer.playNextSong();
+    });
+}
 
 function artistClick() {
     // respond to clicking on artists, lazy load albums
@@ -189,7 +220,14 @@ function songClick() {
     // respond to clicking on song
     $(".song").click( function(e) {
         var song = Song.createSongFromSelection($(this));
-        musicPlayer.addSongToPlayList(song).playSong(song);
+        musicPlayer.addSongToPlayList(song);
+    });
+}
+
+function playListSongClick() {
+    $(".playListSong").click( function(e) {
+        var songIndex = Number($(this).children().first().text());
+        musicPlayer.playSongAtIndex(songIndex);
     });
 }
 

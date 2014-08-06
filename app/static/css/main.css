@@ -286,6 +286,11 @@ body {
     border-radius: 4px;
 }
 
+#play_list_wrapper {
+  overflow-y: scroll;
+  max-height: 10em;
+}
+
 ul, ol {
     list-style-type: none;
     margin: 0 auto;
@@ -305,6 +310,10 @@ li.album {
 
 li.song {
     margin-left: 80px;
+}
+
+#spacer {
+    height: 5em;
 }
 
 /*

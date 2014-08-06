@@ -15,7 +15,7 @@
             <h1>PiPlayer</h1>
             <p>Logged in as: {{ username }}</p>
 
-            <audio></audio>
+            <audio controls="yep"></audio>
             <div id="controller">
                 <button id="play_button" class="play"></button>
             </div>
@@ -36,6 +36,8 @@
                 {% endfor %}
                 </ul>
             </div>
+
+            <div id="spacer"></div>
         </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
