@@ -23,19 +23,25 @@
             <h2>Currently playing:</h2>
             <p id="currently_playing">nothing</p>
 
-            <h2>Playlist:</h2>
-            <div id="clear_play_list"><p>clear</p></div>
-            <div id="play_list_wrapper">
-                <ul id="play_list"></ul>
-            </div>
+            <div id="play_list_and_music_wrapper">
+                <div id="play_list_outer_wrapper">
+                    <h2>Playlist:</h2>
+                    <div id="clear_play_list"><p>clear</p></div>
+                    <div id="play_list_inner_wrapper">
+                        <ul id="play_list"></ul>
+                    </div>
+                </div>
 
-            <h2>Music:</h2>
-            <div id="music">
-                <ul>
-                {% for artist in music.artists %}
-                    <li class="artist">{{ artist|e }}</li>
-                {% endfor %}
-                </ul>
+                <div id="music_outer_wrapper">
+                    <h2>Music:</h2>
+                    <div id="music_inner_wrapper">
+                        <ul>
+                        {% for artist in music.artists %}
+                            <li class="artist">{{ artist|e }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div id="spacer"></div>

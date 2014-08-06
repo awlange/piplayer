@@ -278,17 +278,23 @@ body {
     padding-left: 0px;
 }
 
+#music_outer_wrapper {
+    padding-left: 20px;
+    width: 45%;
+    float: left;
+}
 
-#music, #play_list_wrapper {
-    width: 95%;
+#play_list_outer_wrapper {
+    width: 45%;
+    float: left;
+}
+
+#music_inner_wrapper, #play_list_inner_wrapper {
     padding: 5px 7px;
     background-color: #34495E;
     border-radius: 4px;
-}
-
-#play_list_wrapper {
-  overflow-y: scroll;
-  max-height: 10em;
+    max-height: 25em;
+    overflow-y: scroll;
 }
 
 ul, ol {
@@ -313,6 +319,7 @@ li.song {
 }
 
 #spacer {
+    clear: both;
     height: 5em;
 }
 
